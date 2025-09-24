@@ -1,0 +1,81 @@
+# Build artifacts
+.objs/
+ircserv
+bot
+*.o
+*.d
+*.a
+*.so
+*.dylib
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.pid
+
+# Debug files
+*.dSYM/
+core
+core.*
+
+# Backup files
+*.bak
+*.backup
+*.orig
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Compilation artifacts
+*.exe
+*.out
+*.app
+
+# Test files
+test_*
+*_test
+tests/
+
+# Documentation build
+docs/_build/
+site/
+
+# Package files
+*.tar.gz
+*.zip
+*.rar
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Coverage reports
+coverage/
+*.gcov
+*.gcno
+*.gcda
+
+# Valgrind output
+valgrind-*
+*.memcheck
+
+# Profiling output
+*.prof
+gmon.out

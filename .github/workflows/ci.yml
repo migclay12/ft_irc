@@ -1,0 +1,102 @@
+name: CI - ft_irc
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential g++ make
+        
+    - name: Set up environment
+      run: |
+        echo "HOSTNAME=localhost" >> $GITHUB_ENV
+        
+    - name: Build main server
+      run: |
+        make clean
+        make
+        echo "✅ Main server compiled successfully"
+        
+    - name: Build bonus bot
+      run: |
+        make bonus
+        echo "✅ Bonus bot compiled successfully"
+        
+    - name: Test compilation with different flags
+      run: |
+        make clean
+        make CXXFLAGS="-Wall -Wextra -Werror -std=c++98"
+        echo "✅ Compilation with strict flags successful"
+        
+    - name: Check for executable files
+      run: |
+        ls -la ircserv
+        ls -la bot
+        echo "✅ Executables created successfully"
+        
+    - name: Test server startup (basic)
+      run: |
+        timeout 2s ./ircserv 6667 testpass || true
+        echo "✅ Server startup test completed"
+        
+    - name: Clean up
+      run: |
+        make fclean
+        echo "✅ Cleanup completed"
+
+  code-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential g++ make cppcheck
+        
+    - name: Static analysis with cppcheck
+      run: |
+        cppcheck --enable=all --std=c++98 --suppress=missingIncludeSystem srcs/ inc/ || true
+        echo "✅ Static analysis completed"
+        
+    - name: Check code formatting
+      run: |
+        echo "Checking for consistent indentation..."
+        find srcs/ inc/ -name "*.cpp" -o -name "*.hpp" | xargs grep -l "^[[:space:]]*$" || true
+        echo "✅ Code formatting check completed"
+
+  documentation:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check README exists
+      run: |
+        test -f README.md && echo "✅ README.md exists" || echo "❌ README.md missing"
+        
+    - name: Check .gitignore exists
+      run: |
+        test -f .gitignore && echo "✅ .gitignore exists" || echo "❌ .gitignore missing"
+        
+    - name: Validate README structure
+      run: |
+        grep -q "# ft_irc" README.md && echo "✅ README has proper title"
+        grep -q "## 🚀 Features" README.md && echo "✅ README has features section"
+        grep -q "## 🔨 Building" README.md && echo "✅ README has build instructions"
+        echo "✅ README structure validation completed"

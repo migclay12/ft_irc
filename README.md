@@ -247,5 +247,3 @@ This project is part of the 42 curriculum and follows 42's academic integrity po
 ---
 
 *Developed with ❤️ at 42 School*
-
-![42 Logo](https://42.fr/wp-content/uploads/2021/05/42_logo_black.svg)
